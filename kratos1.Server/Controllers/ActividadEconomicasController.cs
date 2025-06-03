@@ -41,6 +41,17 @@ namespace krat1.Server.Controllers
             return actividades;
         }
 
+        [httpGet("paged")]
+        public async Task<IActionResult<PagedResult<ActividadEconomicas>>> GetPagedProducts([FromQuery] int page 
+        = 1, [FromQuery] int pageSize = 10)
+        {
+         var query = _context.ActividadEconomicas.AsQueyable();
+         var totalItems = await query.CountAsync();
+         var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+         return new PagedResult<ActividadEconomicas>
+        
+        
         [HttpGet]
         [Route("Consultar")]
         public async Task<ActividadEconomicas?> Consultar(int id)

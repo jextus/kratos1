@@ -1,26 +1,30 @@
-          
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     setError('');
-    try {
-      if (email && password) {
-        navigate('/dashboard');
-      } else {
-        setError('Por favor ingresa email y contraseña');
-      }
-    } catch {
-      setError('Error al iniciar sesión. Por favor verifica tus credenciales.');
+
+    const result = await login(email, password);
+    
+    if (result.success) {
+      navigate('/dashboard');
+    } else {
+      setError(result.message);
     }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -49,12 +53,14 @@ const Login = () => {
               required
             />
           </div>
-          <button type="submit" className="login-button">Ingresar</button>
+          <button 
+            type="submit" 
+            className="login-button"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Cargando...' : 'Ingresar'}
+          </button>
         </form>
-        <div className="login-links">
-          <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
-          <a href="/register">¿No tienes cuenta? Regístrate</a>
-        </div>
       </div>
     </div>
   );

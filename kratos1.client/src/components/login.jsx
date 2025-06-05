@@ -16,14 +16,17 @@ const Login = () => {
     setIsLoading(true);
     setError('');
 
-    const result = await login(email, password);
-    
-    if (result.success) {
-      navigate('/dashboard');
-    } else {
-      setError(result.message);
+    try {
+      const result = await login(email, password); // login debe usar axios internamente
+      if (result.success) {
+        navigate('/dashboard');
+      } else {
+        setError(result.message);
+      }
+    } catch {
+      setError('Error de conexión con el servidor.');
     }
-    
+
     setIsLoading(false);
   };
 

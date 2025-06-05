@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Krat1.Server.Models;
 
-namespace krat1.Server.Controllers
+namespace kratos1.Server.api
 {
     [Route("api/[controller]")]
     [ApiController]
